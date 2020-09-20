@@ -36,7 +36,7 @@ public class SelectionSort {
 
         System.out.println("\nSelection Sorted: ");
         int[] sorted = selectionSort(numbers);
-        printArray(sorted);
+//        printArray(sorted);
 
     }
 
@@ -52,7 +52,11 @@ public class SelectionSort {
             int temp = A[minIndex]; // store (smallest) value in temp
             A[minIndex] = A[i]; // swap current ith value at A[i] (bigger value) to where the smallest value was
             A[i] = temp;    // swap the next jth (smallest value) found to current index i
-        }
+
+            for (int num:A) {
+                System.out.print(" " + num + " ");
+            }
+            System.out.println( " => i = " + i+": ");        }
         return A;   // sorted
     }
 

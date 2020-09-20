@@ -2,12 +2,15 @@ package algorithms;
 
 public class MergeSortTutorial {
 
-    private static void printArray(int[] array) {
+    static int count = 0;
 
+    private static void printArray(int[] array) {
+        System.out.print("i =>" + count + ": ");
         for(int i: array) {
             System.out.print(i + ", ");
         }
         System.out.println();
+        count +=1;
     }
 
     private static int[] mergeSort(int[] array) {
@@ -42,6 +45,11 @@ public class MergeSortTutorial {
         }
 
         int[] result;
+
+        /* print array */
+
+        printArray(left);
+        printArray(right);
 
         // recursive part of the mergeSort
         // recursion over once line 13 of function is true, and returns array.
@@ -88,8 +96,8 @@ public class MergeSortTutorial {
     public static void main(String args[]) {
         int[] array = { 5, 4, 3, 2, 1 };
 
-        System.out.println("Initial Array: ");
-        printArray(array);
+//        System.out.println("Initial Array: ");
+//        printArray(array);
 
         array = mergeSort(array); // mergeSort sort the array in asc oder
 

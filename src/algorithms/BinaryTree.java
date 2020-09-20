@@ -8,24 +8,127 @@ public class BinaryTree {
     public static void main (String[] args) {
         BinaryTree theTree = new BinaryTree();
 
-        theTree.addNode(50, "Boss");
-        theTree.addNode(25, "Vice pres");
-        theTree.addNode(15, "Office manager");
-        theTree.addNode(30, "Sales Guy");
-        theTree.addNode(75, "HR girl");
-        theTree.addNode(85, "Janitor");
+        theTree.addNode(7, "G");
+        theTree.addNode(3, "F");
+        theTree.addNode(8, "I");
+        theTree.addNode(2, "J");
+        theTree.addNode(4, "E");
+        theTree.addNode(1, "D");
+        theTree.addNode(5, "C");
+        theTree.addNode(10, "B");
+        theTree.addNode(16, "H");
+
+
+
+        System.out.println("--- Inorder traversal ---");
+        theTree.inOrderTraverseTree(theTree.root);
+
+//        System.out.println("--- REMOVE KEY 25---");
+//        theTree.remove(25);
 
 //        System.out.println("--- Inorder traversal ---");
 //        theTree.inOrderTraverseTree(theTree.root);
-//
+
 //        System.out.println("--- Preorder traversal ---");
 //        theTree.preOrderTraverseTree(theTree.root);
+
 
 //        System.out.println("--- Postorder traversal ---");
 //        theTree.postOrderTraverseTree(theTree.root);
 
-        System.out.println("-- Search for node with key 30 --");
-        System.out.println(theTree.findNode(30));
+//        System.out.println("-- Search for node with key 30 --");
+//        System.out.println(theTree.findNode(30));
+    }
+
+    public boolean remove(int key) {
+        Node focusNode = root;
+        Node parent = root;
+
+        boolean isItALeftChild = true;
+
+        while(focusNode.key != key) {
+            parent = focusNode;
+
+            if(key < focusNode.key) {
+                isItALeftChild = true;
+
+                focusNode = focusNode.leftChild;
+            } else {
+                isItALeftChild = false;
+                focusNode = focusNode.rightChild;
+            }
+
+            if(focusNode == null)
+                return  false;
+        }
+
+        // deleting part.
+        // at this point the node doesn't have children.
+        // now we're in the situation where we're going to delete these guys
+        if(focusNode.leftChild == null && focusNode.rightChild == null) {
+            if(focusNode == null) {
+                root = null;
+            } else if(isItALeftChild) {
+                parent.leftChild = null;
+            } else {
+                parent.rightChild = null;
+            }
+        }
+        // in a situation where there is no right child
+        else if(focusNode.rightChild == null) {
+            if(focusNode == root) {
+                root = focusNode.leftChild;
+            } else if(isItALeftChild) {
+                parent.leftChild = focusNode.leftChild;
+            } else {
+                parent.rightChild = focusNode.leftChild;
+            }
+        }
+
+        else if(focusNode.leftChild == null) {
+            if(focusNode == root) {
+                root = focusNode.rightChild;
+            } else if(isItALeftChild) {
+                parent.leftChild = focusNode.rightChild;
+            } else {
+                parent.rightChild = focusNode.leftChild;
+            }
+        }
+
+        else { // two children are involved
+            Node replacement = getReplacementNode(focusNode);
+
+            if(focusNode == root) {
+                root = replacement;
+            } else if(isItALeftChild) {
+                parent.leftChild = replacement;
+            } else
+                parent.rightChild = replacement;
+
+            replacement.leftChild = focusNode.leftChild;
+        }
+        return true;
+    }
+
+    public Node getReplacementNode(Node replacedNode) {
+        Node replacementParent = replacedNode;
+        Node replacement = replacedNode;
+
+        Node focusNode = replacedNode.rightChild;
+
+        while (focusNode != null) {
+            replacementParent = replacement;
+            replacement = focusNode;
+
+            focusNode = focusNode.leftChild;
+        }
+
+        if(replacement != replacedNode.rightChild) {
+            replacementParent.leftChild = replacement.rightChild;
+            replacement.rightChild = replacedNode.rightChild;
+        }
+
+        return replacement;
     }
 
     public void addNode(int key, String name) {
